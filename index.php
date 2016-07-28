@@ -33,7 +33,12 @@ class KD_Movies_Post_Type {
 			'rewrite' => array(
 				'slug' => 'movies/',
 			),
-			'public' => true
+			// makes the custom post type visible in backend
+			'public' => true,
+			// menu position 1 to 100
+			'menu_position' => 5,
+			// menu icon in wp-admin folder
+			'menu_icon' => admin_url().'images/media-button-video.gif'
 		);
 		register_post_type('kd_movie', $args);
 	}
