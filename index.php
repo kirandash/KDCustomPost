@@ -11,6 +11,7 @@ class KD_Movies_Post_Type {
 	
 	public function __construct(){
 		$this->register_post_type();
+		$this->taxonomies();
 	}
 	
 	public function register_post_type(){
@@ -20,8 +21,8 @@ class KD_Movies_Post_Type {
 				'name' => 'Movies',
 				'singular_name' => 'Movie',
 				'add_new' => 'Add New Movie',
-				'edit_item' => 'Edit Item',
-				'new_item' => 'Add New Item',
+				'edit_item' => 'Edit Movie',
+				'new_item' => 'Add New Movie',
 				'view_item' => 'View Movie',
 				'search_items' => 'Search Movies',
 				'not_found' => 'No Movies Found',
@@ -31,7 +32,7 @@ class KD_Movies_Post_Type {
 			'query_var' => 'movies',
 			// url structure
 			'rewrite' => array(
-				'slug' => 'movies/',
+				'slug' => 'movies',
 			),
 			// makes the custom post type visible in backend
 			'public' => true,
@@ -43,9 +44,77 @@ class KD_Movies_Post_Type {
 		);
 		register_post_type('kd_movie', $args);
 	}
+	
+	public function taxonomies(){
+		
+		$taxonomies = array();
+		
+		$taxonomies['genre'] = array(
+			// for admin options
+			'labels' => array(
+				'name' => 'Genre',
+				'singular_name' => 'Genre',
+				'add_new' => 'Add New Genre',
+				'edit_item' => 'Edit Genre',
+				'update_item' => 'Update Genre',
+				'add_new_item' => 'Add New Genre',
+				'all_items' => 'All Genres',
+				'search_items' => 'Search Genre',
+				'popular_items' => 'Popular Genres',
+				'separate_items_with_comments' => 'Separate genres with commas',
+				'add_or_remove_items' => 'Add or remove genres',
+				'choose_from_most_used' => 'Choose from most used genres'
+			),
+			// variable to query movies
+			'query_var' => 'movie_genre',
+			// url structure
+			'rewrite' => array(
+				'slug' => 'movies/genre'
+			),
+			// set hierarchy so that taxonomy can have parent
+			'hierarchical' => true
+		);	
+		
+		$taxonomies['studio'] = array(
+			// for admin options
+			'labels' => array(
+				'name' => 'Studio',
+				'singular_name' => 'Studio',
+				'add_new' => 'Add New Studio',
+				'edit_item' => 'Edit Studio',
+				'update_item' => 'Update Studio',
+				'add_new_item' => 'Add New Studio',
+				'all_items' => 'All Studio',
+				'search_items' => 'Search Studio',
+				'popular_items' => 'Popular Studio',
+				'separate_items_with_comments' => 'Separate Studio with commas',
+				'add_or_remove_items' => 'Add or remove Studio',
+				'choose_from_most_used' => 'Choose from most used Studio'
+			),
+			// variable to query movies
+			'query_var' => 'movie_studio',
+			// url structure
+			'rewrite' => array(
+				'slug' => 'movies/studio'
+			),
+			// set hierarchy so that taxonomy can have parent
+			'hierarchical' => true
+		);	
+				
+		$this->register_all_taxonomies($taxonomies);
+	}
+	
+	public function register_all_taxonomies($taxonomies){
+		// register_taxonomy('movie_genre', array('kd_movie'), $args); - For single taxonomy
+		foreach($taxonomies as $name=>$arr) {
+			register_taxonomy($name, array('kd_movie'), $arr);
+		}
+	}
+	
 }
 
 add_action('init', function(){
 	new KD_Movies_Post_Type();
 });
+
 ?>
