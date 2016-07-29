@@ -149,6 +149,7 @@ class KD_Movies_Post_Type {
 
 add_action('init', function(){
 	new KD_Movies_Post_Type();
+	include dirname(__FILE__) . '/movies_post_type_shortcode.php';
 });
 
 ?>
